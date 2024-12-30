@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>국비 과정 선택</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+<form id="courseForm">
+  <div>
+    <label for="courseSelect">국비 과정:</label>
+    <select id="courseSelect" name="nationalCourseId" required>
+      <option value="">과정을 선택하세요</option> <!-- 기본 옵션 -->
+    </select>
+  </div>
+</form>
+
+<!-- 회차 정보를 테이블 형식으로 표시 -->
+<table id="sessionTable" style="display: none;">
+  <thead>
+  <tr>
+    <th>회차명</th>
+    <th>회차 번호</th>
+    <th>시작일</th>
+    <th>종료일</th>
+    <th>상세 설명</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- 회차 정보는 여기에 동적으로 추가됩니다. -->
+  </tbody>
+</table>
+
+<script>
+  // 페이지 로드 시 국비 과정 목록을 불러오기
+  window.onload = async function() {
+      try {
+          // 서버에서 국비 과정 목록을 불러옴
+          const response = await fetch('/api/NationalCourseList');
+          const courses = await response.json(); // 응답을 JSON으로 파싱
+
+          const courseSelect = document.getElementById('courseSelect');
+          // 각 과정에 대해 option 태그 생성
+          courses.forEach(course => {
+              const option = document.createElement('option');
+              option.value = course.nationalCourseId; // 프라이머리 키가 실제로 서버로 전송됨
+              option.textContent = course.courseName;  // 사용자에게 보이는 값은 과정명
+              courseSelect.appendChild(option);
+          });
+      } catch (error) {
+          console.error('국비 과정 목록을 불러오는 중 오류가 발생했습니다:', error);
+          alert('국비 과정 목록을 불러오는 중 오류가 발생했습니다.');
+      }
+  };
+
+  // 국비 과정 선택 시 해당 회차 정보 테이블 형식으로 불러오기
+  document.getElementById('courseSelect').addEventListener('change', async function(event) {
+      const courseId = event.target.value; // 선택된 과정의 id
+
+      if (courseId) {
+          try {
+              // 선택된 과정의 회차 정보 가져오기
+              const response = await fetch(`/api/NationalCourseSessionsview/${courseId}`);
+              const sessions = await response.json(); // 서버에서 반환된 회차 정보
+
+              const sessionTableBody = document.querySelector('#sessionTable tbody');
+              sessionTableBody.innerHTML = ''; // 기존 테이블 내용 초기화
+
+              if (sessions.length > 0) {
+                  // 회차 정보가 있을 경우 테이블을 표시
+                  document.getElementById('sessionTable').style.display = 'table';
+
+                  // 각 회차에 대해 테이블 행 추가
+                  sessions.forEach(session => {
+                      const row = document.createElement('tr');
+
+                      const sessionNameCell = document.createElement('td');
+                      sessionNameCell.textContent = session.sessionName;
+                      row.appendChild(sessionNameCell);
+
+                      const sessionNumberCell = document.createElement('td');
+                      sessionNumberCell.textContent = session.sessionNumber;
+                      row.appendChild(sessionNumberCell);
+
+                      const startDateCell = document.createElement('td');
+                      startDateCell.textContent = formatDate(session.sessionStartDate);
+                      row.appendChild(startDateCell);
+
+                      const endDateCell = document.createElement('td');
+                      endDateCell.textContent = formatDate(session.sessionEndDate);
+                      row.appendChild(endDateCell);
+
+                      const descriptionCell = document.createElement('td');
+                      descriptionCell.textContent = session.sessionDescription || '없음';
+                      row.appendChild(descriptionCell);
+
+                      // 테이블에 추가
+                      sessionTableBody.appendChild(row);
+                  });
+              } else {
+                  // 회차 정보가 없을 경우 메시지 표시
+                  alert('선택한 과정에 대한 회차 정보가 없습니다.');
+                  document.getElementById('sessionTable').style.display = 'none'; // 테이블 숨기기
+              }
+          } catch (error) {
+              console.error('회차를 불러오는 중 오류가 발생했습니다:', error);
+              alert('회차를 불러오는 중 오류가 발생했습니다.');
+          }
+      } else {
+          // 과정 선택이 비어있으면 테이블 숨기기
+          document.getElementById('sessionTable').style.display = 'none';
+      }
+  });
+
+  // 날짜 포맷을 'YYYY-MM-DD'로 변환하는 함수
+  function formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+  }
+</script>
+
+</body>
+</html>

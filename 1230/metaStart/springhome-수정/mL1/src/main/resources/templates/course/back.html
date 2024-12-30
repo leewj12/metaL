@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>국비 과정 목록</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    form {
+        margin-top: 20px;
+    }
+    input, select, button {
+        margin: 10px;
+        padding: 10px;
+        font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>국비 과정 목록</h1>
+
+<!-- 국비 과정 선택 폼 -->
+<form id="courseForm">
+  <div>
+    <label for="courseSelect">국비 과정:</label>
+    <select id="courseSelect" name="courseSelect">
+      <option value="">과정을 선택하세요</option> <!-- 기본 옵션 -->
+    </select>
+  </div>
+  <div>
+    <label for="sessionName">회차:</label>
+    <!-- 회차 번호를 readonly로 설정하여 수정 불가 -->
+    <input type="text" id="sessionName" name="sessionName" readonly>
+    <!-- 실제 회차 번호를 hidden으로 전송 -->
+    <input type="hidden" id="sessionNumber" name="sessionNumber">
+  </div>
+  <button type="submit">등록</button>
+</form>
+
+<script>
+  // 페이지 로드 시 국비 과정 목록을 불러오기
+  window.onload = async function() {
+      try {
+          // 서버에서 국비 과정 목록을 불러옴
+          const response = await fetch('/api/NationalCourseList');
+          const courses = await response.json(); // 응답을 JSON으로 파싱
+
+          const courseSelect = document.getElementById('courseSelect');
+          // 각 과정에 대해 option 태그 생성
+          courses.forEach(course => {
+              const option = document.createElement('option');
+              option.value = course.nationalCourseId; // 프라이머리 키가 실제로 서버로 전송됨
+              option.textContent = course.courseName;  // 사용자에게 보이는 값은 과정명
+              courseSelect.appendChild(option);
+          });
+      } catch (error) {
+          console.error('국비 과정 목록을 불러오는 중 오류가 발생했습니다:', error);
+          alert('국비 과정 목록을 불러오는 중 오류가 발생했습니다.');
+      }
+  };
+
+  // 국비 과정 선택 시 회차명 증가시키기
+  document.getElementById('courseSelect').addEventListener('change', async function(event) {
+      const courseId = event.target.value; // 선택된 과정의 id
+
+      if (courseId) {
+          try {
+              // 선택된 과정의 회차 정보 가져오기
+              const response = await fetch(`/api/NationalCourseSessions/${courseId}`);
+              const nextSessionNumber = await response.json(); // 서버에서 반환된 값
+
+              // 회차 텍스트로 표시
+              const nextSessionName = `${nextSessionNumber}`; // 서버에서 받은 값 그대로 표시
+              document.getElementById('sessionName').value = nextSessionName; // 회차명 입력란에 표시
+              document.getElementById('sessionNumber').value = nextSessionNumber; // 숫자 값은 hidden으로 전송
+          } catch (error) {
+              console.error('회차를 불러오는 중 오류가 발생했습니다:', error);
+              alert('회차를 불러오는 중 오류가 발생했습니다.');
+          }
+      } else {
+          // 과정 선택이 없으면 회차명 초기화
+          document.getElementById('sessionName').value = '';
+          document.getElementById('sessionNumber').value = ''; // hidden 값도 초기화
+      }
+  });
+</script>
+
+</body>
+</html>

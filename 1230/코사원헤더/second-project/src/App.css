@@ -1,0 +1,15 @@
+/* global.css 또는 App.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* 전체 화면 높이 */
+}
+
+#home {
+  display: block;   /* 기본 블록 요소로 설정 */
+  min-height: 100%;  /* 페이지가 최소 화면 높이를 유지 */
+}
+
+main {
+  padding: 0; /* 메인의 기본 여백 제거 */
+}

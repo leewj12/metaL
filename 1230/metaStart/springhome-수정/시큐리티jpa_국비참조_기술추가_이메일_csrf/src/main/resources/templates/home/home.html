@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li><a href="/signup">회원가입</a></li>
+    <li><a href="/login">로그인</a></li>
+    <li>
+        <!-- 로그아웃을 POST 방식으로 처리하는 폼 -->
+        <form action="/logout" method="POST" style="display:inline;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit">로그아웃</button>
+        </form>
+    </li>
+    <li><a href="/videotest">동영상 업로드</a></li>
+    <li><a href="/videoview">동영상 보고 및 다운로드</a></li>
+    <li><a href="/nationalcourse">국비과정 등록</a></li>
+    <li><a href="/session">국비과정 상세 등록</a></li>
+    <li><a href="/sessionview">국비과정 상세 보기</a></li>
+    <li><a href="https://www.naver.com">네이버 테스트!</a></li>
+
+</ul>
+</body>
+</html>
+
+

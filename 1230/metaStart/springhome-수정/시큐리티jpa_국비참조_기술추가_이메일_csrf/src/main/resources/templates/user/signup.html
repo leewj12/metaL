@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 사용 -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="text"], input[type="email"], input[type="password"], input[type="date"], select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      margin-top: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:disabled {
+      background-color: #ccc;
+    }
+    span {
+      color: red;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>회원가입</h2>
+<form id="signup-form">
+  <div>
+    <label for="name">이름:</label>
+    <input type="text" id="name" name="name" required>
+  </div>
+  <div>
+    <label for="useremail">이메일:</label>
+    <input type="email" id="useremail" name="useremail" required>
+    <button type="button" id="check-email-btn">이메일 중복 확인</button>
+    <span id="email-status"></span>
+  </div>
+  <div>
+    <label for="password">비밀번호:</label>
+    <input type="password" id="password" name="password" required>
+  </div>
+  <div>
+    <label for="usergender">성별:</label>
+    <select id="usergender" name="usergender">
+      <option value="MALE">남성</option>
+      <option value="FEMALE">여성</option>
+      <option value="OTHER">기타</option>
+    </select>
+  </div>
+  <div>
+    <label for="userbirth">생일:</label>
+    <input type="date" id="userbirth" name="userbirth" required>
+  </div>
+  <div>
+    <label for="userPhoneNumber">전화번호:</label>
+    <input type="text" id="userPhoneNumber" name="userPhoneNumber" required>
+  </div>
+  <div>
+    <label for="userpersonalInfoConsent">개인정보 동의:</label>
+    <input type="checkbox" id="userpersonalInfoConsent" name="userpersonalInfoConsent" required>
+  </div>
+  <div>
+    <label for="usermarketingConsent">마케팅 동의:</label>
+    <input type="checkbox" id="usermarketingConsent" name="usermarketingConsent" required>
+  </div>
+  <div>
+    <label for="verification-code">이메일 인증 코드:</label>
+    <input type="password" id="verification-code" name="verification-code" disabled required>
+    <button type="button" id="send-verification-email" disabled>인증 이메일 전송</button>
+    <button type="button" id="verify-code-btn" disabled>인증 코드 확인</button>
+    <span id="verification-status"></span>
+  </div>
+  <button type="submit" id="signup-btn" disabled>회원가입</button>
+</form>
+
+<script>
+  // 이메일 중복 확인 버튼 클릭 시
+  document.getElementById("check-email-btn").addEventListener("click", async function() {
+    const userEmail = document.getElementById("useremail").value;
+    if (!userEmail) {
+      alert("이메일을 입력해주세요.");
+      return;
+    }
+
+    const response = await fetch("/api/check-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ useremail: userEmail })
+    });
+    const data = await response.json();
+
+    if (data.status === "ok") {
+      document.getElementById("email-status").innerText = "사용 가능한 이메일입니다.";
+      document.getElementById("send-verification-email").disabled = false;  // 인증 이메일 버튼 활성화
+    } else {
+      document.getElementById("email-status").innerText = "이미 사용 중인 이메일입니다.";
+    }
+  });
+
+  // 이메일 인증 코드 전송 버튼 클릭 시
+  document.getElementById("send-verification-email").addEventListener("click", async function() {
+    const userEmail = document.getElementById("useremail").value;
+
+    const response = await fetch("/api/send-verification-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ useremail: userEmail })
+    });
+    const data = await response.json();
+
+    if (data.status === "ok") {
+      alert("인증 이메일을 전송했습니다.");
+      document.getElementById("verification-code").disabled = false;  // 인증 코드 입력 활성화
+      document.getElementById("verify-code-btn").disabled = false;   // 인증 코드 확인 버튼 활성화
+    } else {
+      alert("인증 이메일 전송 실패.");
+    }
+  });
+
+  // 인증 코드 확인 버튼 클릭 시
+  document.getElementById("verify-code-btn").addEventListener("click", async function() {
+    const verificationCode = document.getElementById("verification-code").value;
+    const userEmail = document.getElementById("useremail").value;
+
+    const response = await fetch("/api/verify-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ useremail: userEmail, verificationCode: verificationCode })
+    });
+
+    const data = await response.json();
+    if (data.status === "ok") {
+      document.getElementById("verification-status").innerText = "인증 성공!";
+      document.getElementById("signup-btn").disabled = false;  // 인증 성공 후 회원가입 버튼 활성화
+    } else {
+      document.getElementById("verification-status").innerText = "인증 코드가 틀렸습니다.";
+    }
+  });
+
+  // 회원가입 폼 제출
+  document.getElementById("signup-form").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const verificationCode = document.getElementById("verification-code").value;
+
+    // 인증 코드 확인
+    const response = await fetch("/api/verify-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        useremail: document.getElementById("useremail").value,
+        verificationCode: verificationCode
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.status === "ok") {
+      // 인증 성공 시 회원가입 처리
+      const formData = {
+        name: document.getElementById("name").value,
+        useremail: document.getElementById("useremail").value,
+        password: document.getElementById("password").value,
+        usergender: document.getElementById("usergender").value,
+        userbirth: document.getElementById("userbirth").value,
+        userPhoneNumber: document.getElementById("userPhoneNumber").value,
+        userpersonalInfoConsent: document.getElementById("userpersonalInfoConsent").checked,
+        usermarketingConsent: document.getElementById("usermarketingConsent").checked
+      };
+
+      const signupResponse = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const signupData = await signupResponse.json();
+      if (signupData.status === "ok") {
+        alert(signupData.message);
+        window.location.href = "/login";  // 로그인 페이지로 리다이렉트
+      } else {
+        alert(signupData.message || "회원가입에 실패하였습니다.");
+      }
+    } else {
+      alert("인증 코드가 틀렸습니다.");
+    }
+  });
+</script>
+
+</body>
+</html>

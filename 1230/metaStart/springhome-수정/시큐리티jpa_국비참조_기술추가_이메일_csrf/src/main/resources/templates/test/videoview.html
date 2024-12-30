@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Video</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>Video Viewing</h1>
+<button onclick="openVideoInNewWindow()">View First Video</button>
+
+<script>
+    function openVideoInNewWindow() {
+        fetch('/api/videoview', {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                const videoUrl = data.message; // 동영상 경로
+                const videoWindow = window.open('', '_blank', 'width=800,height=600');
+                videoWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>View Video</title>
+                    </head>
+                    <body>
+                        <h1>View Video</h1>
+                        <video width="100%" controls autoplay>
+                            <source src="${videoUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </body>
+                    </html>
+                `);
+            } else {
+                alert(data.message);  // 에러 메시지 처리
+            }
+        })
+        .catch(err => {
+            console.error('Error fetching video URL:', err);
+            alert('An error occurred while fetching the video.');
+        });
+    }
+</script>
+</body>
+</html>

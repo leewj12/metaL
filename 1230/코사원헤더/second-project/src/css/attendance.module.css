@@ -1,0 +1,86 @@
+/* 전체 컨테이너 */
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* 달력 컨테이너 */
+  .calendarContainer {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: white;
+  }
+  
+  /* 달력 셀 크기 조정 */
+  .react-calendar {
+    font-size: 1rem; /* 글자 크기 조정 */
+  }
+  
+  .react-big-calendar {
+    font-size: 1.2rem;
+  }
+  
+  /* 주말 배경색 */
+  .react-calendar__tile--weekend {
+    background-color: #f9f9f9;
+  }
+  
+  .react-calendar__tile {
+    height: 120px; /* 셀 높이 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+  }
+  
+  /* 버튼 컨테이너 */
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 15px;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .entryButton {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .exitButton {
+    background-color: #ff5722;
+    color: white;
+  }
+  
+  /* 로그 컨테이너 */
+  .logContainer {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logContainer ul {
+    list-style: none;
+    padding: 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .logContainer li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국비 등록 과정</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input, select, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>국비 등록 과정</h1>
+
+<!-- 국비 과정 등록 폼 -->
+<form id="nationalCourseForm">
+    <div>
+        <label for="courseName">과정명:</label>
+        <input type="text" id="courseName" name="courseName" required>
+    </div>
+    <div>
+        <label for="courseStatus">수강 상태:</label>
+        <select id="courseStatus" name="courseStatus">
+            <option value="진행중">진행중</option>
+            <option value="완료">완료</option>
+            <option value="대기">대기</option>
+        </select>
+    </div>
+    <button type="submit">등록</button>
+</form>
+
+<!-- 메시지 표시 영역 -->
+<div id="messageArea" class="message"></div>
+
+<script>
+    document.getElementById('nationalCourseForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // 폼 제출 기본 동작을 막기
+
+        const courseName = document.getElementById('courseName').value;
+        const courseStatus = document.getElementById('courseStatus').value;
+
+        const courseData = {
+            courseName: courseName,
+            courseStatus: courseStatus
+        };
+
+        try {
+            const response = await fetch('/api/NationalCourse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(courseData),
+            });
+
+            const data = await response.json();
+            const messageArea = document.getElementById('messageArea');
+
+            if (response.ok) {
+                messageArea.style.color = 'green';
+                messageArea.textContent = data.message; // 서버에서 반환한 메시지 표시
+                document.getElementById('nationalCourseForm').reset(); // 폼 초기화
+            } else {
+                messageArea.style.color = 'red';
+                messageArea.textContent = data.message; // 실패 메시지 표시
+            }
+        } catch (error) {
+            console.error('Error during API request:', error);
+            alert("등록에 실패했습니다. 다시 시도해주세요.");
+        }
+    });
+</script>
+
+</body>
+</html>

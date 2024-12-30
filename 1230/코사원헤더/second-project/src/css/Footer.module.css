@@ -1,0 +1,158 @@
+.footer {
+  background-color: #ffa600e0;
+  color: #030303;
+  font-size: 14px;
+}
+
+.footerTop {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.footerTitle h6 {
+  color: #000000;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.logoImage {
+  width: 100px;
+  margin-bottom: 15px;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.footerCopyright {
+  background-color: #ff8c00;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.listUnstyled {
+  list-style: none; /* 점 제거 */
+  padding: 0; /* 기본 패딩 제거 */
+  margin: 0; /* 기본 마진 제거 */
+  text-align: left; /* 텍스트 정렬 */
+}
+
+.listUnstyled li {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+  
+.listUnstyled i {
+
+color: #ffffff;
+}
+
+.listUnstyled a {
+  text-decoration: none;
+  color: #ffffff; /* 기본 링크 색상 */
+  font-size: 14px;
+  font-weight: 500; /* 링크 텍스트 두께 */
+}
+
+.listUnstyled a:hover {
+color: #ff4500; /* 호버 시 어두운 주황색 */
+}
+
+.contactUs{
+  align-self: flex-start;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.contactUs li{
+  margin-bottom:10px;
+
+}
+
+
+.footerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.sectionTitle {
+  color: #333333; /* 제목 색상 변경 */
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-bottom: 2px solid #ffffff; /* 섹션 구분 */
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+
+/* 반응형 스타일 */
+@media screen and (max-width: 768px) {
+  .footerTop {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center; /* 텍스트 중앙 정렬 */
+  }
+
+  .socialIcons {
+    justify-content: center;
+    gap: 8px; /* 아이콘 간격 축소 */
+  }
+  .contactUs li {
+  margin-bottom: 12px; /* 리스트 간격 */
+}
+
+  .logoImage {
+    width: 80px; /* 작은 화면에서 로고 크기 감소 */
+  }
+
+  .footerTitle h6 {
+    font-size: 16px; /* 작은 화면에서 제목 크기 감소 */
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .footerTop {
+    display: flex;
+    flex-direction: column; /* 섹션 세로 배치 */
+    align-items: center;
+    gap: 20px;
+  }
+
+  .footerTitle h6 {
+    font-size: 14px; /* 더 작은 화면에서 제목 크기 감소 */
+  }
+
+  .logoImage {
+    width: 70px; /* 모바일 화면에서 로고 크기 더 감소 */
+  }
+
+  .socialIcons {
+    gap: 5px; /* 아이콘 간격 축소 */
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .footer {
+    font-size: 15px; /* 큰 화면에서 폰트 크기 약간 증가 */
+  }
+
+  .footerTop {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .logoImage {
+    width: 120px; /* 큰 화면에서 로고 크기 증가 */
+  }
+
+  .socialIcons {
+    gap: 15px; /* 아이콘 간격 더 넓히기 */
+  }
+}

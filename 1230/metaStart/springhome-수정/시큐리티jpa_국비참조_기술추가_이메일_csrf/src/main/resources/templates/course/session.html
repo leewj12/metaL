@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>국비 과정 목록</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    form {
+        margin-top: 20px;
+    }
+    input, select, button {
+        margin: 10px;
+        padding: 10px;
+        font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>국비 과정 목록</h1>
+
+<!-- 국비 과정 선택 폼 -->
+<form id="courseForm">
+  <div>
+    <label for="courseSelect">국비 과정:</label>
+    <select id="courseSelect" name="nationalCourseId" required>
+      <option value="">과정을 선택하세요</option> <!-- 기본 옵션 -->
+    </select>
+  </div>
+  <div>
+    <label for="sessionNumber">회차:</label>
+    <input type="text" id="sessionNumber" name="sessionNumber" readonly> <!-- sessionNumber 필드를 수정 -->
+  </div>
+
+  <div>
+    <label for="sessionName">회차명:</label>
+    <input type="text" id="sessionName" name="sessionName" required>
+  </div>
+
+  <div>
+    <label for="sessionDescription">회차 설명:</label>
+    <input type="text" id="sessionDescription" name="sessionDescription" required>
+  </div>
+
+
+
+  <div>
+    <label for="sessionStartDate">시작일:</label>
+    <input type="date" id="sessionStartDate" name="sessionStartDate" required>
+  </div>
+  <div>
+    <label for="sessionEndDate">종료일:</label>
+    <input type="date" id="sessionEndDate" name="sessionEndDate" required>
+  </div>
+  <div>
+    <label for="curriculum">커리큘럼:</label>
+    <input type="text" id="curriculum" name="curriculum">
+  </div>
+  <div>
+    <label for="category">카테고리:</label>
+    <select id="category" name="category" required>
+      <option value="">카테고리 선택</option>
+      <option value="IT">IT</option>
+      <option value="디자인">디자인</option>
+      <option value="마케팅">마케팅</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="maxCapacity">최대 수용 인원:</label>
+    <input type="text" id="maxCapacity" name="maxCapacity">
+  </div>
+
+  <div>
+    <label for="isOnline">온라인 여부:</label>
+    <select id="isOnline" name="isOnline" required>
+      <option value="Online">온라인</option>
+      <option value="Offline">오프라인</option>
+    </select>
+  </div>
+  <button type="submit">등록</button>
+</form>
+
+<script>
+  // 페이지 로드 시 국비 과정 목록을 불러오기
+  window.onload = async function() {
+      try {
+          // 서버에서 국비 과정 목록을 불러옴
+          const response = await fetch('/api/NationalCourseList');
+          const courses = await response.json(); // 응답을 JSON으로 파싱
+
+          const courseSelect = document.getElementById('courseSelect');
+          // 각 과정에 대해 option 태그 생성
+          courses.forEach(course => {
+              const option = document.createElement('option');
+              option.value = course.nationalCourseId; // 프라이머리 키가 실제로 서버로 전송됨
+              option.textContent = course.courseName;  // 사용자에게 보이는 값은 과정명
+              courseSelect.appendChild(option);
+          });
+      } catch (error) {
+          console.error('국비 과정 목록을 불러오는 중 오류가 발생했습니다:', error);
+          alert('국비 과정 목록을 불러오는 중 오류가 발생했습니다.');
+      }
+  };
+
+  // 국비 과정 선택 시 회차 번호 증가시키기
+  document.getElementById('courseSelect').addEventListener('change', async function(event) {
+      const courseId = event.target.value; // 선택된 과정의 id
+
+      if (courseId) {
+          try {
+              // 선택된 과정의 회차 정보 가져오기
+              const response = await fetch(`/api/NationalCourseSessions/${courseId}`);
+              const nextSessionNumber = await response.json(); // 서버에서 반환된 값
+
+              // 회차 번호로 표시
+              document.getElementById('sessionNumber').value = nextSessionNumber; // 회차번호 입력란에 표시
+          } catch (error) {
+              console.error('회차를 불러오는 중 오류가 발생했습니다:', error);
+              alert('회차를 불러오는 중 오류가 발생했습니다.');
+          }
+      } else {
+          // 과정 선택이 없으면 회차번호 초기화
+          document.getElementById('sessionNumber').value = ''; // 회차번호 초기화
+      }
+  });
+
+  // 폼 제출 시 AJAX로 데이터를 전송
+  document.getElementById('courseForm').addEventListener('submit', async function(event) {
+      event.preventDefault(); // 폼 제출 기본 동작을 막음
+
+      const formData = new FormData(this); // 폼 데이터 가져오기
+      const data = Object.fromEntries(formData.entries()); // FormData를 객체로 변환
+
+      try {
+          const response = await fetch('/api/NationalSessionCourse', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json', // JSON으로 데이터 전송
+              },
+              body: JSON.stringify(data), // 폼 데이터를 JSON 형식으로 변환하여 전송
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              alert('회차가 등록되었습니다.');
+          } else {
+              alert('회차 등록에 실패했습니다.');
+          }
+      } catch (error) {
+          console.error('데이터 전송 중 오류가 발생했습니다:', error);
+          alert('서버와의 통신 중 오류가 발생했습니다.');
+      }
+  });
+</script>
+
+</body>
+</html>

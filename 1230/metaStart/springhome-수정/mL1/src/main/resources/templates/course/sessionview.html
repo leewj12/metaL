@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>국비 과정 선택</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    button, a {
+      padding: 5px 10px;
+      text-decoration: none;
+      color: white;
+      background-color: blue;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover, a:hover {
+      background-color: darkblue;
+    }
+  </style>
+</head>
+<body>
+
+<form id="courseForm">
+  <div>
+    <label for="courseSelect">국비 과정:</label>
+    <select id="courseSelect" name="nationalCourseId" required>
+      <option value="">과정을 선택하세요</option>
+    </select>
+  </div>
+</form>
+
+<!-- 회차 정보를 테이블 형식으로 표시 -->
+<table id="sessionTable" style="display: none;">
+  <thead>
+  <tr>
+    <th>회차명</th>
+    <th>회차 번호</th>
+    <th>시작일</th>
+    <th>종료일</th>
+    <th>상세 설명</th>
+    <th>수정</th>
+    <th>삭제</th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+<!-- CSV 저장 버튼 -->
+<button id="downloadCsv" style="margin-top: 20px; display: none;">CSV 저장</button>
+
+<!-- 프린터 버튼 -->
+<button id="printTable" style="margin-top: 20px; display: none;">프린터로 인쇄</button>
+
+<script>
+  // 페이지 로드 시 국비 과정 목록을 불러오기
+  window.onload = async function() {
+      try {
+          const response = await fetch('/api/NationalCourseList');
+          const courses = await response.json();
+
+          const courseSelect = document.getElementById('courseSelect');
+          courses.forEach(course => {
+              const option = document.createElement('option');
+              option.value = course.nationalCourseId;
+              option.textContent = course.courseName;
+              courseSelect.appendChild(option);
+          });
+      } catch (error) {
+          console.error('국비 과정 목록을 불러오는 중 오류가 발생했습니다:', error);
+          alert('국비 과정 목록을 불러오는 중 오류가 발생했습니다.');
+      }
+  };
+
+  // 국비 과정 선택 시 회차 정보 불러오기
+  document.getElementById('courseSelect').addEventListener('change', async function(event) {
+      const courseId = event.target.value;
+
+      if (courseId) {
+          try {
+              const response = await fetch(`/api/NationalCourseSessionsview/${courseId}`);
+              const sessions = await response.json();
+
+              const sessionTableBody = document.querySelector('#sessionTable tbody');
+              sessionTableBody.innerHTML = '';
+
+              if (sessions.length > 0) {
+                  document.getElementById('sessionTable').style.display = 'table';
+                  document.getElementById('downloadCsv').style.display = 'inline-block';  // CSV 버튼 활성화
+                  document.getElementById('printTable').style.display = 'inline-block';   // 프린트 버튼 활성화
+
+                  sessions.forEach(session => {
+                      const row = document.createElement('tr');
+                      const sessionNameCell = document.createElement('td');
+                      sessionNameCell.textContent = session.sessionName;
+                      row.appendChild(sessionNameCell);
+
+                      const sessionNumberCell = document.createElement('td');
+                      sessionNumberCell.textContent = session.sessionNumber;
+                      row.appendChild(sessionNumberCell);
+
+                      const startDateCell = document.createElement('td');
+                      startDateCell.textContent = formatDate(session.sessionStartDate);
+                      row.appendChild(startDateCell);
+
+                      const endDateCell = document.createElement('td');
+                      endDateCell.textContent = formatDate(session.sessionEndDate);
+                      row.appendChild(endDateCell);
+
+                      const descriptionCell = document.createElement('td');
+                      descriptionCell.textContent = session.sessionDescription || '없음';
+                      row.appendChild(descriptionCell);
+
+                      const editCell = document.createElement('td');
+                      const editLink = document.createElement('a');
+                      editLink.textContent = '수정';
+                      editLink.href = `/editSession?sessionId=${session.nationalSessionCourseId}`;
+                      editCell.appendChild(editLink);
+                      row.appendChild(editCell);
+
+                      const deleteCell = document.createElement('td');
+                      const deleteButton = document.createElement('button');
+                      deleteButton.textContent = '삭제';
+                      deleteButton.addEventListener('click', () => deleteSession(session.nationalSessionCourseId));
+                      deleteCell.appendChild(deleteButton);
+                      row.appendChild(deleteCell);
+
+                      sessionTableBody.appendChild(row);
+                  });
+              } else {
+                  alert('선택한 과정에 대한 회차 정보가 없습니다.');
+                  document.getElementById('sessionTable').style.display = 'none';
+                  document.getElementById('downloadCsv').style.display = 'none';  // CSV 버튼 숨기기
+                  document.getElementById('printTable').style.display = 'none';   // 프린트 버튼 숨기기
+              }
+          } catch (error) {
+              console.error('회차 정보를 불러오는 중 오류가 발생했습니다:', error);
+              alert('회차 정보를 불러오는 중 오류가 발생했습니다.');
+          }
+      } else {
+          document.getElementById('sessionTable').style.display = 'none';
+          document.getElementById('downloadCsv').style.display = 'none';  // CSV 버튼 숨기기
+          document.getElementById('printTable').style.display = 'none';   // 프린트 버튼 숨기기
+      }
+  });
+
+  // 회차 삭제 함수
+  async function deleteSession(sessionId) {
+      if (confirm('회차를 삭제하시겠습니까?')) {
+          try {
+              const response = await fetch(`/api/NationalCourseSessionDelete/${sessionId}`, {
+                  method: 'DELETE'
+              });
+
+              if (response.ok) {
+                  alert('삭제가 완료되었습니다.');
+                  document.getElementById('courseSelect').dispatchEvent(new Event('change'));
+              } else {
+                  alert('삭제 중 오류가 발생했습니다.');
+              }
+          } catch (error) {
+              console.error('삭제 중 오류가 발생했습니다:', error);
+              alert('삭제 중 오류가 발생했습니다.');
+          }
+      }
+  }
+
+  // 날짜 포맷을 'YYYY-MM-DD'로 변환하는 함수
+  function formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+  }
+
+  // CSV 저장 기능
+  document.getElementById('downloadCsv').addEventListener('click', function () {
+      const rows = document.querySelectorAll('#sessionTable tbody tr');
+      let csvContent = '회차명,회차 번호,시작일,종료일,상세 설명\n'; // CSV 헤더 추가
+
+      rows.forEach(row => {
+          const columns = row.querySelectorAll('td');
+          const rowArray = Array.from(columns).map(cell => cell.textContent.trim());
+          csvContent += rowArray.join(',') + '\n'; // 각 셀을 쉼표로 구분하여 한 줄에 추가
+      });
+
+      // Blob 객체를 이용해 CSV 파일 만들기
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (navigator.msSaveBlob) { // IE에서 파일 다운로드
+          navigator.msSaveBlob(blob, 'sessionData.csv');
+      } else {
+          link.href = URL.createObjectURL(blob);
+          link.download = 'sessionData.csv'; // 다운로드할 파일명 지정
+          link.click(); // 링크 클릭을 통해 다운로드 실행
+      }
+  });
+
+  // 프린트 기능
+  document.getElementById('printTable').addEventListener('click', function () {
+      const printWindow = window.open('', '', 'height=800, width=1000');
+
+      // 프린트할 내용 준비
+      printWindow.document.write('<html><head><title>국비 과정 회차</title></head><body>');
+      printWindow.document.write('<h2>국비 과정 회차 목록</h2>');
+      printWindow.document.write(document.getElementById('sessionTable').outerHTML); // 테이블 HTML을 복사해서 인쇄할 내용으로 추가
+      printWindow.document.write('</body></html>');
+      printWindow.document.close(); // 문서 종료
+      printWindow.print(); // 브라우저 프린트 대화상자를 호출
+  });
+</script>
+
+</body>
+</html>
