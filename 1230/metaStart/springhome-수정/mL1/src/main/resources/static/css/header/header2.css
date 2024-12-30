@@ -1,0 +1,95 @@
+/* Header.module.css */
+.topBar {
+    background-color: #FFA500;
+    color: #ffffff;
+    padding: 0.5rem 0;
+    font-size: 1rem; /* 기본 폰트 크기 */
+  }
+
+  .logoText {
+    color: #003366;
+    font-size: 2rem; /* 크기 증가 */
+    font-weight: bold; /* 더 두껍게 */
+    margin-bottom: 0;
+    font-family: 'Poppins', sans-serif; /* 현대적이고 깔끔한 글꼴 */
+    letter-spacing: 2px; /* 글자 간격 추가 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* 가벼운 그림자 효과 */
+  }
+
+  buttonHighlight {
+    background-color: #0055a5;
+    color: #ffffff;
+  }
+
+  navLink {
+    color: #003366;
+  }
+
+  .badgeHighlight {
+    background-color: #0055a5;
+    color: #ffffff;
+  }
+
+  .navItem {
+    margin: 0 15px; /* 네비게이션 아이템 간격 */
+    font-weight: bold; /* 글씨 두껍게 */
+    font-size: 1rem; /* 글씨 크기 조정 */
+  }
+
+  /* 반응형 스타일 */
+  @media screen and (max-width: 768px) {
+    .topBar {
+      font-size: 0.9rem; /* 작은 화면에서는 폰트 크기 감소 */
+      padding: 0.4rem 0; /* 패딩 축소 */
+    }
+
+    .logoText {
+      font-size: 1.8rem; /* 작은 화면에서 로고 텍스트 크기 감소 */
+      letter-spacing: 1px; /* 글자 간격 줄이기 */
+    }
+
+    .navItem {
+      margin: 0 10px; /* 네비게이션 아이템 간격 축소 */
+      font-size: 0.9rem; /* 글씨 크기 축소 */
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .topBar {
+      font-size: 0.8rem; /* 더 작은 화면에서 폰트 크기 감소 */
+      padding: 0.3rem 0; /* 패딩 축소 */
+      text-align: center; /* 텍스트 중앙 정렬 */
+    }
+
+    .logoText {
+      font-size: 1.5rem; /* 더 작은 화면에서 로고 텍스트 크기 감소 */
+      letter-spacing: 0.5px; /* 글자 간격 줄이기 */
+    }
+
+    .navItem {
+      font-size: 0.8rem; /* 글씨 크기 더 축소 */
+      margin: 0 5px; /* 네비게이션 아이템 간격 더 축소 */
+    }
+
+    /* 네비게이션 아이템 숨기기 (해당 경우 필요 시 추가) */
+    .navItem {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .topBar {
+      font-size: 1.1rem; /* 큰 화면에서 폰트 크기 증가 */
+      padding: 0.6rem 0; /* 패딩 증가 */
+    }
+
+    .logoText {
+      font-size: 2.2rem; /* 로고 텍스트 크기 증가 */
+      letter-spacing: 2.5px; /* 글자 간격 확대 */
+    }
+
+    .navItem {
+      font-size: 1.1rem; /* 글씨 크기 확대 */
+      margin: 0 20px; /* 네비게이션 아이템 간격 확대 */
+    }
+  }
