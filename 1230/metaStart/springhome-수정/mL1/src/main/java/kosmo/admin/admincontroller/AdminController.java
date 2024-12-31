@@ -9,4 +9,9 @@ public class AdminController {
     public String adminhome(){
         return "/admin/home";
     }
+
+    @GetMapping("/KDT/sessionlist")
+    public String sessionlist(){
+        return "/KDT/sessionlist";
+    }
 }

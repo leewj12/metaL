@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>국비지원 교육과정</title>
+  <link rel="stylesheet" href="/static/css/header/header.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    /* 카드 스타일 */
+    .course-card {
+      display: flex;
+      border: 1px solid #ffa500;
+      margin-bottom: 20px;
+      height: 400px;
+      overflow: hidden;
+      background-color: #fff;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 이미지 영역 */
+    .course-card img {
+      width: 33%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 상세정보 영역 */
+    .details {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .details h5 {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #212529;
+    }
+
+    .details .category {
+      display: inline-block;
+      background-color: #ffa500;
+      color: white;
+      padding: 5px 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .details p {
+      margin: 5px 0;
+      color: #6c757d;
+      font-size: 1rem;
+    }
+
+    /* 액션 영역 */
+    .action-box {
+      width: 33%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff8e1;
+      border-left: 2px solid #ffa500;
+    }
+
+    .action-box .dday {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #ffa500;
+      margin-bottom: 15px;
+    }
+
+    .action-box a {
+      display: block;
+      text-align: center;
+      width: 80%;
+      margin: 5px 0;
+      padding: 10px 15px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: white;
+      background-color: #ffa500;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .action-box a:hover {
+      background-color: #ff9500;
+    }
+
+    /* 선택 박스 스타일 */
+    .custom-select {
+        width: auto;
+        padding: 8px 16px;
+        font-size: 1rem;
+        border: 1px solid #dc3545;
+        border-radius: 8px;
+        color: #dc3545;
+        background-color: #ffffff;
+    }
+
+    .custom-select:hover {
+        background-color: #f8d7da;
+        cursor: pointer;
+    }
+
+    /* 검색바 스타일 */
+    .search-bar {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+  </style>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container mt-5">
+
+  <!-- 검색바 -->
+  <div class="search-bar">
+    <select class="custom-select">
+      <option value="all">전체 카테고리</option>
+      <option value="digital-training">K-디지털 트레이닝</option>
+      <option value="ai-analysis">AI 분석</option>
+      <option value="cloud-service">클라우드</option>
+    </select>
+    <input type="text" class="form-control w-50" placeholder="교육과정명으로 검색하기">
+    <button class="btn btn-danger">검색</button>
+    <button class="btn btn-secondary">초기화</button>
+  </div>
+
+  <!-- 과정 카드 -->
+  <div class="course-card">
+    <img src="/static/images/logo.png" alt="Sample Image">
+    <div class="details">
+      <h5>빅데이터 서비스 구현 과정</h5>
+      <span class="category">K-디지털 트레이닝</span>
+      <p>교육기간: 2025-01-14 ~ 2025-07-09</p>
+      <p>교육시간: 09:30 ~ 18:30</p>
+      <p>교육장소: 경기도 성남시...</p>
+      <p>교육비용: 100% 전액 무료</p>
+    </div>
+    <div class="action-box">
+      <div class="dday">D-14</div>
+      <a href="#">상세히 보기</a>
+      <a href="#">수강신청</a>
+      <a href="#">빠른 상담 신청</a>
+    </div>
+  </div>
+
+  <div class="course-card">
+    <img src="/static/images/noImg.jpg" alt="Sample Image">
+    <div class="details">
+      <h5>AI 데이터 분석 전문가 과정</h5>
+      <span class="category">AI 분석</span>
+      <p>교육기간: 2025-03-01 ~ 2025-08-30</p>
+      <p>교육시간: 10:00 ~ 17:00</p>
+      <p>교육장소: 서울특별시...</p>
+      <p>교육비용: 100% 전액 무료</p>
+    </div>
+    <div class="action-box">
+      <div class="dday">D-60</div>
+      <a href="#">상세히 보기</a>
+      <a href="#">수강신청</a>
+      <a href="#">빠른 상담 신청</a>
+    </div>
+  </div>
+
+<!-- 과정 카드 -->
+<div class="course-card">
+  <img src="/static/images/logo.png" alt="Sample Image">
+  <div class="details">
+    <h5>빅데이터 서비스 구현 과정</h5>
+    <span class="category">K-디지털 트레이닝</span>
+    <p>교육기간: 2025-01-14 ~ 2025-07-09</p>
+    <p>교육시간: 09:30 ~ 18:30</p>
+    <p>교육장소: 경기도 성남시...</p>
+    <p>교육비용: 100% 전액 무료</p>
+  </div>
+  <div class="action-box">
+    <div class="dday">D-14</div>
+    <a href="#">상세히 보기</a>
+    <a href="#">수강신청</a>
+    <a href="#">빠른 상담 신청</a>
+  </div>
+</div>
+
+<div class="course-card">
+  <img src="/static/images/noImg.jpg" alt="Sample Image">
+  <div class="details">
+    <h5>AI 데이터 분석 전문가 과정</h5>
+    <span class="category">AI 분석</span>
+    <p>교육기간: 2025-03-01 ~ 2025-08-30</p>
+    <p>교육시간: 10:00 ~ 17:00</p>
+    <p>교육장소: 서울특별시...</p>
+    <p>교육비용: 100% 전액 무료</p>
+  </div>
+  <div class="action-box">
+    <div class="dday">D-60</div>
+    <a href="#">상세히 보기</a>
+    <a href="#">수강신청</a>
+    <a href="#">빠른 상담 신청</a>
+  </div>
+</div>
+</div>
+
+<!-- 푸터 삽입 -->
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
