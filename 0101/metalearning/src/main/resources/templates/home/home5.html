@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Header</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="/static/css/header/header.css">
+  <link rel="stylesheet" href="/static/css/footer/footer.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    /* 공통 */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    /* 배너 */
+    .banner-section {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .banner-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 3rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+      text-align: center;
+    }
+
+    /* 강의 카드 */
+    .card-section {
+      position: relative;
+      padding: 2rem;
+      background-color: #f8f9fa;
+      overflow: hidden;
+    }
+
+    .card-slider {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .card {
+      flex: 0 0 33.33%;
+      max-width: 33.33%;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+
+    .card-body {
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .slider-btn.left {
+      left: 10px;
+    }
+
+    .slider-btn.right {
+      right: 10px;
+    }
+
+    /* 특징 섹션 */
+    .info-section {
+      padding: 3rem 1rem;
+      background-color: #ffffff;
+    }
+
+    .info-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+    }
+
+    .info-content {
+      display: flex;
+      gap: 2rem;
+      justify-content: space-around;
+      align-items: stretch;
+    }
+
+    .info-box {
+      flex: 1;
+      padding: 2rem;
+      border-radius: 10px;
+      background: #f8f9fa;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .info-box h5 {
+      color: #ff5733;
+      margin-bottom: 1rem;
+    }
+
+    /* 반응형 */
+    @media (max-width: 768px) {
+      .card {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+
+      .info-content {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 헤더 삽입 -->
+<div th:replace="fragments/header :: header"></div>
+
+<!-- 배너 섹션 -->
+<section class="banner-section">
+  <div class="banner">
+    <img src="/static/images/banner1.jpg" alt="배너1">
+    <div class="banner-text">메타러닝과 함께라면 IT 취업 성공은 이루어집니다.</div>
+  </div>
+  <div class="banner">
+    <img src="/static/images/banner2.jpg" alt="배너2">
+    <div class="banner-text">성공적인 미래를 위한 첫걸음, 메타러닝!</div>
+  </div>
+  <div class="banner">
+    <img src="/static/images/banner3.jpg" alt="배너3">
+    <div class="banner-text">전문가의 길로, 메타러닝과 함께하세요.</div>
+  </div>
+</section>
+
+<!-- 강의 카드 섹션 -->
+<section class="card-section">
+  <button class="slider-btn left" onclick="moveSlide(-1)">&#8249;</button>
+  <div class="card-slider" id="cardSlider">
+    <!-- 카드 6개 -->
+    <div class="card">
+      <div class="card-body">
+        <img src="/static/images/course1.jpg" alt="Course 1">
+        <h5>빅데이터 분석</h5>
+        <p>2025-01-14 ~ 2025-07-09</p>
+        <p class="text-danger">전액 무료</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <img src="/static/images/course2.jpg" alt="Course 2">
+        <h5>AI 개발자 과정</h5>
+        <p>2025-02-13 ~ 2025-08-05</p>
+        <p class="text-danger">전액 무료</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <img src="/static/images/course3.jpg" alt="Course 3">
+        <h5>클라우드 과정</h5>
+        <p>2025-03-06 ~ 2025-08-26</p>
+        <p class="text-danger">전액 무료</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <img src="/static/images/course4.jpg" alt="Course 4">
+        <h5>프론트엔드 개발</h5>
+        <p>2025-04-01 ~ 2025-10-01</p>
+        <p class="text-danger">전액 무료</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <img src="/static/images/course5.jpg" alt="Course 5">
+        <h5>백엔드 개발</h5>
+        <p>2025-05-01 ~ 2025-11-01</p>
+        <p class="text-danger">전액 무료</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <img src="/static/images/course6.jpg" alt="Course 6">
+        <h5>데브옵스 과정</h5>
+        <p>2025-06-01 ~ 2025-12-01</p>
+        <p class="text-danger">전액 무료</p>
+      </div>
+    </div>
+  </div>
+  <button class="slider-btn right" onclick="moveSlide(1)">&#8250;</button>
+</section>
+
+<!-- 사이트 설명 -->
+<section class="info-section">
+  <div class="info-title">MetaLearning의 특징</div>
+  <div class="info-content">
+    <div class="info-box">
+      <h5>체계적인 학습 관리</h5>
+      <p>학생과 강사를 위한 완벽한 학습 플랫폼을 제공합니다.</p>
+    </div>
+    <div class="info-box">
+      <h5>맞춤형 커리큘럼</h5>
+      <p>학습자의 목표에 맞는 교육 과정을 설계합니다.</p>
+    </div>
+    <div class="info-box">
+      <h5>온라인 강의 플랫폼</h5>
+      <p>편리하게 학습하고 관리할 수 있는 환경을 제공합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!--&lt;!&ndash; 본문 내용 &ndash;&gt;-->
+<!--<main class="container mt-4">-->
+<!--  <h1>메인 페이지</h1>-->
+<!--  <ul>-->
+<!--    <li><a href="/signup">회원가입</a></li>-->
+<!--    <li><a href="/login">로그인</a></li>-->
+<!--    <li><a href="/logout">로그아웃</a></li>-->
+<!--    <li><a href="/videotest">동영상 업로드</a></li>-->
+<!--    <li><a href="/videoview">동영상 보고 및 다운로드</a></li>-->
+<!--    <li><a href="/nationalcourse">국비과정 등록</a></li>-->
+<!--    <li><a href="/session">국비과정 상세 등록</a></li>-->
+<!--    <li><a href="/sessionview">국비과정 상세 보기</a></li>-->
+<!--    <li><a href="/userId">시큐리티 조회</a></li>-->
+<!--    <li><a href="/hand">핸들러</a></li>-->
+<!--  </ul>-->
+<!--</main>-->
+
+<!-- 푸터 삽입 -->
+<div th:replace="fragments/footer :: footer"></div>
+
+<script>
+  let currentSlide = 0;
+
+  function moveSlide(direction) {
+    const slider = document.getElementById('cardSlider');
+    const cards = document.querySelectorAll('.card');
+    const totalCards = cards.length;
+    const visibleCards = 3;
+
+    currentSlide = (currentSlide + direction + totalCards) % totalCards;
+    slider.style.transform = `translateX(${-currentSlide * (100 / visibleCards)}%)`;
+  }
+</script>
+
+</body>
+
+</html>

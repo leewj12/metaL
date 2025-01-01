@@ -1,0 +1,45 @@
+.header {
+    display: flex; /* Flexbox로 설정 */
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 80px;
+    align-items: center;
+    height: 80px;
+    justify-content: space-between;
+}
+
+.leftSection {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: white;
+    text-decoration: none;
+}
+
+.rightSection {
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+
+
+
+.logoutButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.logoutButton:hover {
+    background-color: #c82333;
+}

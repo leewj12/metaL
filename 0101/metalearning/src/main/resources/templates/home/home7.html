@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MetaLearning</title>
+  <link rel="stylesheet" href="/static/css/header/header.css">
+  <link rel="stylesheet" href="/static/css/footer/footer.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* General Styles */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    section {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Banner Section */
+    .banner {
+      height: calc(100vh - 200px); /* 헤더 높이 제외 */
+      position: relative;
+      overflow: hidden;
+    }
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .banner img.active {
+      opacity: 1;
+    }
+    .banner-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* Lecture Cards Section */
+    .cards-section {
+      height: calc(100vh - 200px);
+      background-color: #f8f9fa;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-container {
+      display: flex;
+      gap: 20px;
+      transition: transform 0.5s ease-in-out;
+    }
+    .lecture-card {
+      flex: 0 0 30%;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      text-align: center;
+    }
+    .lecture-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .lecture-card .card-body {
+      padding: 15px;
+    }
+
+    .card-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .card-btn.left {
+      left: 10px;
+    }
+    .card-btn.right {
+      right: 10px;
+    }
+
+    /* Special Features Section */
+    .features-section {
+      height: calc(100vh - 200px);
+      background-color: #e6f7ff;
+      display: flex;
+      padding: 40px;
+    }
+    .features-left {
+      flex: 1;
+      padding-right: 20px;
+      text-align: left;
+    }
+    .features-right {
+      flex: 2;
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+    }
+    .feature-card {
+      flex: 1;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      text-align: center;
+      transition: 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .features-section {
+        flex-direction: column;
+        text-align: center;
+      }
+      .features-left {
+        padding-right: 0;
+      }
+      .features-right {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Header -->
+<div th:replace="fragments/header :: header"></div>
+
+<!-- Banner Section -->
+<section class="banner">
+  <img src="/static/images/mBanner.png" alt="Banner 1" class="active">
+  <img src="/static/images/mBanner.png" alt="Banner 2">
+  <img src="/static/images/mBanner.png" alt="Banner 3">
+  <div class="banner-text">MetaLearning에서 미래를 설계하세요!</div>
+</section>
+
+<!-- Lecture Cards Section -->
+<section class="cards-section">
+  <button class="card-btn left" onclick="slideCards(-1)">&#8249;</button>
+  <div class="card-container" id="cardContainer">
+    <div class="lecture-card">
+      <img src="/static/images/logo.png" alt="Course Image">
+      <div class="card-body">
+        <h5>강의 제목 1</h5>
+        <p>강의 설명 예시</p>
+      </div>
+    </div>
+    <div class="lecture-card">
+      <img src="/static/images/noImg.jpg" alt="Course Image">
+      <div class="card-body">
+        <h5>강의 제목 2</h5>
+        <p>강의 설명 예시</p>
+      </div>
+    </div>
+    <div class="lecture-card">
+      <img src="/static/images/logo.png" alt="Course Image">
+      <div class="card-body">
+        <h5>강의 제목 3</h5>
+        <p>강의 설명 예시</p>
+      </div>
+    </div>
+    <div class="lecture-card">
+      <img src="/static/images/noImg.jpg" alt="Course Image">
+      <div class="card-body">
+        <h5>강의 제목 4</h5>
+        <p>강의 설명 예시</p>
+      </div>
+    </div>
+    <div class="lecture-card">
+      <img src="/static/images/logo.png" alt="Course Image">
+      <div class="card-body">
+        <h5>강의 제목 5</h5>
+        <p>강의 설명 예시</p>
+      </div>
+    </div>
+    <div class="lecture-card">
+      <img src="/static/images/noImg.jpg" alt="Course Image">
+      <div class="card-body">
+        <h5>강의 제목 6</h5>
+        <p>강의 설명 예시</p>
+      </div>
+    </div>
+  </div>
+  <button class="card-btn right" onclick="slideCards(1)">&#8250;</button>
+</section>
+
+<!-- Special Features Section -->
+<section class="features-section">
+  <div class="features-left">
+    <h2>MetaLearning 특장점</h2>
+    <p>국비지원 교육과정을 비롯한 폭넓은 온라인 학습 플랫폼을 제공합니다.</p>
+    <ul>
+      <li>1:1 맞춤형 학습 관리</li>
+      <li>현업 전문가 강사진</li>
+      <li>최신 트렌드 반영 커리큘럼</li>
+    </ul>
+  </div>
+  <div class="features-right">
+    <div class="feature-card">국비지원 과정</div>
+    <div class="feature-card">체계적인 학습 관리</div>
+    <div class="feature-card">온라인 강의 플랫폼</div>
+  </div>
+</section>
+
+<!-- Footer -->
+<div th:replace="fragments/footer :: footer"></div>
+
+<script>
+  let currentBanner = 0;
+  const banners = document.querySelectorAll('.banner img');
+  setInterval(() => {
+    banners[currentBanner].classList.remove('active');
+    currentBanner = (currentBanner + 1) % banners.length;
+    banners[currentBanner].classList.add('active');
+  }, 3000);
+
+  let cardIndex = 0;
+  function slideCards(direction) {
+    const container = document.getElementById('cardContainer');
+    const cards = Array.from(container.children);
+    cardIndex = (cardIndex + direction + cards.length) % cards.length;
+    container.style.transform = `translateX(-${cardIndex * 33}%)`;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국비 과정 등록</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- 스타일 경로 수정 가능 -->
+</head>
+<body>
+<div class="form-container">
+    <h1>국비 과정 등록</h1>
+    <form action="/admin/KDT/course" method="post">
+        <!-- CSRF Token -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <!-- 과정명 입력 필드 -->
+        <div class="form-group">
+            <label for="KDTCourseTitle">과정명</label>
+            <input type="text" id="KDTCourseTitle" name="KDTCourseTitle" required>
+        </div>
+
+        <!-- 수강 상태 (활성화/비활성화) -->
+        <div class="form-group">
+            <label for="KDTCourseStatus">수강 상태</label>
+            <select id="KDTCourseStatus" name="KDTCourseStatus" required>
+                <option value="true">활성화</option>
+                <option value="false">비활성화</option>
+            </select>
+        </div>
+
+        <!-- 국비 과정 종류 선택 (예: K-디지털 트레이닝, K-코드 아카데미 등) -->
+        <div class="form-group">
+            <label for="KDTCourseType">국비 과정 종류</label>
+            <select id="KDTCourseType" name="KDTCourseType" required>
+                <option value="K-디지털 트레이닝">K-디지털 트레이닝</option>
+                <option value="K-코드 아카데미">K-코드 아카데미</option>
+                <option value="K-마케팅 아카데미">K-마케팅 아카데미</option>
+            </select>
+        </div>
+
+        <!-- 등록 버튼 -->
+        <button type="submit" class="btn">등록</button>
+    </form>
+</div>
+</body>
+</html>
