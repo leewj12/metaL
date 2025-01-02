@@ -69,13 +69,12 @@
   </style>
 </head>
 <body>
-<div class="app-container">
   <!-- Header -->
-  <div th:replace="fragments/adminheader :: adminheader"></div>
+  <div th:replace="~{fragments/adminheader :: adminheader}"></div>
 
   <div class="content-container">
     <!-- Sidebar -->
-    <div th:replace="fragments/adminsidebar :: adminsidebar"></div>
+    <div th:replace="~{fragments/adminsidebar :: adminsidebar}"></div>
     <!-- Main Content -->
     <div class="main-content text-center">
       <h1 class="mb-4"><i class="bi bi-file-earmark-text"></i> 수료증 미리보기</h1>
@@ -128,6 +127,5 @@
       </div>
     </div>
   </div>
-</div>
 </body>
 </html>

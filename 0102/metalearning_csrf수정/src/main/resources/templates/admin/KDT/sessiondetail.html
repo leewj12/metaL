@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>회차 상세 페이지</title>
   <link rel="stylesheet" href="/static/css/admindashboard.css">
@@ -12,10 +12,10 @@
 <body>
 <div class="app-container">
   <!-- Header -->
-  <div class="header" th:replace="fragments/adminheader :: adminheader"></div>
+  <div class="header" th:replace="~{fragments/adminheader :: adminheader}"></div>
   <div class="content-container">
     <!-- Sidebar -->
-    <div class="sidebar" th:replace="fragments/adminsidebar :: adminsidebar"></div>
+    <div class="sidebar" th:replace="~{fragments/adminsidebar :: adminsidebar}"></div>
     <!-- Main Content -->
     <div class="main-content container mt-4">
       <h1 class="mb-4 text-center"><i class="bi bi-calendar-event"></i> 회차 상세 페이지</h1>

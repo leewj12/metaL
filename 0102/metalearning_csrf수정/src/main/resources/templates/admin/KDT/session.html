@@ -73,11 +73,11 @@
 </head>
 <body>
     <!-- 헤더 -->
-    <div th:replace="fragments/adminheader :: adminheader"></div>
+    <div th:replace="~{fragments/adminheader :: adminheader}"></div>
 
     <div class="content-container">
         <!-- 사이드바 -->
-        <div th:replace="fragments/adminsidebar :: adminsidebar"></div>
+        <div th:replace="{fragments/adminsidebar :: adminsidebar}"></div>
 
         <!-- 메인 콘텐츠 -->
         <div class="main-content container mt-4">
